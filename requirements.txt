@@ -1,4 +1,5 @@
-discord.py==2.3.2
-Flask==2.3.2
-pyotp==2.8.0
+discord.py
+Flask
+pyotp
+python-dotenv
 git+https://github.com/CNDRD/siegeapi.git
