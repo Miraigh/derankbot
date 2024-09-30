@@ -112,7 +112,7 @@ async def update_message():
 
     accounts_info = await get_all_accounts_info()
 
-    embed = discord.Embed(title="Мои аккаунты Rainbow Six", color=0x00ff00)
+    embed = discord.Embed(title="Список активных аккаунтов", color=0x00ff00)
     for info in accounts_info:
         embed.add_field(
             name=info['nickname'],
