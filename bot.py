@@ -9,7 +9,11 @@ import threading
 import os
 import sys
 
-# Загрузка конфигурации с явным указанием кодировки
+# Опционально: Загрузка переменных окружения из .env файла для локальной разработки
+# from dotenv import load_dotenv
+# load_dotenv()
+
+# Загрузка конфигурации из config.json с явным указанием кодировки
 try:
     with open('config.json', 'r', encoding='utf-8') as f:
         config = json.load(f)
@@ -23,12 +27,17 @@ except Exception as e:
     print(f"Неизвестная ошибка при загрузке config.json: {e}")
     sys.exit(1)
 
-DISCORD_TOKEN = config.get('discord_token')
+# Загрузка токена из переменных окружения
+DISCORD_TOKEN = os.getenv('DISCORD_TOKEN')
 CHANNEL_ID = config.get('channel_id')
 MESSAGE_ID = config.get('message_id')
 ACCOUNTS = config.get('accounts', [])
 
-if not DISCORD_TOKEN or not CHANNEL_ID or not MESSAGE_ID:
+if not DISCORD_TOKEN:
+    print("Переменная окружения DISCORD_TOKEN не установлена.")
+    sys.exit(1)
+
+if not CHANNEL_ID or not MESSAGE_ID:
     print("Отсутствуют необходимые параметры в config.json.")
     sys.exit(1)
 
@@ -120,6 +129,7 @@ async def update_message():
 def run_flask():
     # Получение порта из переменной окружения или использование 5000 по умолчанию
     port = int(os.environ.get("PORT", 5000))
+    print(f"Запуск Flask-сервера на порту {port}...")
     app.run(host='0.0.0.0', port=port)
 
 if __name__ == '__main__':
